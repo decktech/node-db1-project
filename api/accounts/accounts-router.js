@@ -7,7 +7,8 @@ router.get('/', async (req, res, next) => {
     const data = await Account.getAll() 
     res.json(data)
   } catch (err) {
-    next(err)
+    console.log(err);
+    res.status(500).json({ message: 'Error retrieving accounts' })
   }
 })
 
@@ -15,18 +16,21 @@ router.get('/:id', checkAccountId, (req, res, next) => {
   res.json(req.existingAccount);
 })
 
-router.post('/', async (req, res, next) => {
+router.post('/', checkAccountPayload, checkAccountNameUnique ,async (req, res, next) => {
   try {
-
+    const data = await Account.create(req.newAccount)
+    res.status(201).json(data);
   } catch (err) {
-    next(err)
+    console.log(err);
+    res.status(500).json({ message: 'Error creating account' })
   }
 })
 
 router.put('/:id', async (req, res, next) => {
   try { 
   } catch (err) {
-    next(err)
+    console.log(err);
+    res.status(500).json({ message: 'Error updating account' })
   }
 });
 
@@ -34,7 +38,8 @@ router.delete('/:id', async (req, res, next) => {
   try {
 
   } catch (err) {
-    next(err)
+    console.log(err);
+    res.status(500).json({ message: 'Error deleting account' })
   }
 })
 
