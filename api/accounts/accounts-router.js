@@ -11,13 +11,8 @@ router.get('/', async (req, res, next) => {
   }
 })
 
-router.get('/:id', checkAccountPayload, async (req, res, next) => {
-  try {
-    const data = await Account.getById(req.params.id)
-    res.json(data)
-  } catch (err) {
-    next(err)
-  }
+router.get('/:id', checkAccountId, (req, res, next) => {
+  res.json(req.existingAccount);
 })
 
 router.post('/', async (req, res, next) => {
