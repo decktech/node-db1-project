@@ -18,11 +18,16 @@ const create = async (account) => {
 }
 
 const updateById = (id, account) => {
-  
+  return db('accounts')
+    .where('id', id)
+    .update(account)
+    .then(count => (count > 0 ? getById(id) : null))
 }
 
-const deleteById = id => {
-  
+const deleteById = async id => {
+  const result = await getById(id);
+  await db('accounts').delete().where('id', id);
+  return result;
 }
 
 module.exports = {
